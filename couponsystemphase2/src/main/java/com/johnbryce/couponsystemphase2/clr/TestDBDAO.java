@@ -45,7 +45,10 @@ public class TestDBDAO implements CommandLineRunner {
 		customerDBDAO.addCustomer(customer);
 		for (int i = 0; i < 20; i++) {
 			customerDBDAO.addCustomer(generateOneCustomer());
+			System.out.println("new Customer as added :-)");
 		}
+		System.out.println("all Customers as added Successfully!");
+		space();
 	}
 
 	// Generate one Customer:
@@ -190,11 +193,18 @@ public class TestDBDAO implements CommandLineRunner {
 		c5.setCoupons(generateCouponsForCompany(coupon5));
 
 		companyDBDAO.addCompany(c1);
+		checkCompanyMethod(c1.getName());
 		companyDBDAO.addCompany(c2);
+		checkCompanyMethod(c2.getName());
 		companyDBDAO.addCompany(c3);
+		checkCompanyMethod(c3.getName());
 		companyDBDAO.addCompany(c4);
+		checkCompanyMethod(c4.getName());
 		companyDBDAO.addCompany(c5);
+		checkCompanyMethod(c5.getName());
 
+		System.out.println("all Companies as added Successfully!");
+		space();
 	}
 
 	public List<Coupon> generateCouponsForCompany(Coupon coupon) {
@@ -202,6 +212,16 @@ public class TestDBDAO implements CommandLineRunner {
 		coupons.add(coupon);
 		return coupons;
 
+	}
+
+	public void checkCompanyMethod(String name) {
+		System.out.println("the Company:" + name + " as added Successfully!");
+	}
+
+	public void space() {
+		System.out.println();
+		System.out.println("* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *");
+		System.out.println();
 	}
 
 }

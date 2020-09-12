@@ -1,6 +1,10 @@
 package com.johnbryce.couponsystemphase2.security;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
 
 import com.johnbryce.couponsystemphase2.security.ClientType;
 import com.johnbryce.couponsystemphase2.service.AdminService;
@@ -8,6 +12,8 @@ import com.johnbryce.couponsystemphase2.service.ClientService;
 import com.johnbryce.couponsystemphase2.service.CompanyService;
 import com.johnbryce.couponsystemphase2.service.CustomerService;
 
+@Service
+@Lazy
 public class LoginManager {
 
 	@Autowired
@@ -42,5 +48,9 @@ public class LoginManager {
 			break;
 		}
 		return null;
+	}
+
+	public String loginToken(String email, String password, ClientType administrator) {
+		return UUID.randomUUID().toString();
 	}
 }

@@ -50,7 +50,11 @@ public class AdminService extends ClientService {
 
 	public void deleteCompany(Company company) {
 		companyDBDAO.deleteCompany(company);
-		System.out.println("Delete the company Successfully.");
+		System.out.println("Delete the Company Successfully.");
+	}
+	public void deleteCompany(int companyID) {
+		companyDBDAO.deleteCompanyById(companyID);
+		System.out.println("Delete the Company Successfully.");
 	}
 
 	public List<Company> getAllCompanies() {
@@ -83,8 +87,14 @@ public class AdminService extends ClientService {
 
 	public void deleteCustomer(Customer customer) throws IncorrectDetailsException {
 		customerDBDAO.deleteCustomer(customer);
-		System.out.println("Delete the customer Successfully.");
+		System.out.println("Delete the Customer Successfully.");
 	}
+	public void deleteCustomer(int customerID) {
+		customerDBDAO.deleteCustomerById(customerID);
+		System.out.println("Delete the Customer Successfully.");
+
+	}
+ 
 
 	public List<Customer> getAllCustomers() {
 		return customerDBDAO.getAllCustomers();

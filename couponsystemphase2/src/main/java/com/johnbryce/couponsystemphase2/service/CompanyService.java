@@ -44,6 +44,7 @@ public class CompanyService extends ClientService {
 			}
 		}
 		couponDBDAO.addCoupon(coupon);
+		System.out.println("Coupon:" + coupon.getTitle() + " as added Successfully!");
 
 	}
 
@@ -75,11 +76,19 @@ public class CompanyService extends ClientService {
 			idx.setImage(coupon.getImage());
 		}
 		couponDBDAO.updateCoupon(coupon);
-		System.out.println("Coupon:" + coupon.getTitle() + " update Successfully!");
+		System.out.println("Coupon:" + coupon.getTitle() + " as update Successfully!");
 	}
 
 	public void deleteCoupon(int couponID) {
 		couponDBDAO.deleteCouponById(couponID);
+	}
+
+	public List<Coupon> getAllCoupons() {
+		return couponDBDAO.getAllCoupons();
+	}
+
+	public Coupon getOneCoupon(int couponID) {
+		return couponDBDAO.getOneCoupon(couponID);
 	}
 
 	public List<Coupon> getCompanyCoupons() {
@@ -93,6 +102,10 @@ public class CompanyService extends ClientService {
 			}
 		}
 		return idx;
+	}
+
+	public List<Company> getAllCompanies() {
+		return companyDBDAO.getAllCompanies();
 	}
 
 	public List<Coupon> getCompanyCoupons(Category category) {

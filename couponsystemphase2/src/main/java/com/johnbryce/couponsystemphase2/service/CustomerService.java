@@ -107,6 +107,10 @@ public class CustomerService extends ClientService {
 		return customer;
 	}
 
+	public List<Customer> getAllCustomers() {
+		return customerDBDAO.getAllCustomers();
+	}
+
 	public int getCustomerID(String email) {
 		return customerDBDAO.getCustomerID(email);
 	}
