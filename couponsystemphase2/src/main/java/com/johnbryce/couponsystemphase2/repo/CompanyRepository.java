@@ -7,5 +7,4 @@ import com.johnbryce.couponsystemphase2.beans.Company;
 public interface CompanyRepository extends JpaRepository<Company, Integer> {
 
 	Company findByEmail(String email);
-
 }

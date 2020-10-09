@@ -26,8 +26,13 @@ public class TestService implements CommandLineRunner {
 	@Autowired
 	private LoginManager loginManager;
 
+//	public RestTemplate restTemplate = new RestTemplate();
+//	private static final String BASE_URL = "http://localhost:8081/admin/";
 	@Override
 	public void run(String... args) throws Exception {
+
+//			LoginResponse loginResponse = restTemplate.postForObject(BASE_URL+"login?email=admin@admin.com&password=admin", null, LoginResponse.class);
+//			System.out.println(loginResponse);
 
 		testAll();
 
@@ -62,7 +67,7 @@ public class TestService implements CommandLineRunner {
 		company.setCoupons(Arrays.asList(coupon));
 		admin.updateCompany(company);
 
-		System.out.println(wiskey.getCompanyCoupons());
+		System.out.println(wiskey.getCompanyCoupons(2));
 		space();
 		coupon.setTitle("bla bla");
 		wiskey.updateCoupon(coupon);

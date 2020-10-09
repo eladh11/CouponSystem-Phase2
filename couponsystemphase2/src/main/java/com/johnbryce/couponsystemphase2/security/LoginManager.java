@@ -12,10 +12,14 @@ import com.johnbryce.couponsystemphase2.service.ClientService;
 import com.johnbryce.couponsystemphase2.service.CompanyService;
 import com.johnbryce.couponsystemphase2.service.CustomerService;
 
+import lombok.Getter;
+
 @Service
 @Lazy
+@Getter
 public class LoginManager {
-
+	@Autowired
+	private TokenManager tokenManager;
 	@Autowired
 	private AdminService adminService;
 	@Autowired
@@ -50,7 +54,8 @@ public class LoginManager {
 		return null;
 	}
 
-	public String loginToken(String email, String password, ClientType administrator) {
+	public String loginToken(String email, String password, ClientType type) {
 		return UUID.randomUUID().toString();
 	}
+
 }

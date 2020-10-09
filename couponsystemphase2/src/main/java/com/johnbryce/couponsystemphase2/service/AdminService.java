@@ -1,6 +1,7 @@
 package com.johnbryce.couponsystemphase2.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -42,7 +43,7 @@ public class AdminService extends ClientService {
 		List<Company> companies = companyDBDAO.getAllCompanies();
 		for (Company comp : companies) {
 			if (comp.getName() == company.getName()) {
-				throw new IncorrectDetailsException("NAME - cannot change the company `NAME`");
+				throw new IncorrectDetailsException("NAME - cannot change the Company `NAME`");
 			}
 		}
 		companyDBDAO.updateCompany(company);
@@ -52,6 +53,7 @@ public class AdminService extends ClientService {
 		companyDBDAO.deleteCompany(company);
 		System.out.println("Delete the Company Successfully.");
 	}
+
 	public void deleteCompany(int companyID) {
 		companyDBDAO.deleteCompanyById(companyID);
 		System.out.println("Delete the Company Successfully.");
@@ -61,7 +63,7 @@ public class AdminService extends ClientService {
 		return companyDBDAO.getAllCompanies();
 	}
 
-	public Company getOneCompany(int companyID) {
+	public Optional<Company> getOneCompany(int companyID) {
 		return companyDBDAO.getOneCompany(companyID);
 	}
 
@@ -76,12 +78,6 @@ public class AdminService extends ClientService {
 	}
 
 	public void updateCustomer(Customer customer) throws IncorrectDetailsException {
-		List<Customer> customers = customerDBDAO.getAllCustomers();
-		for (Customer cust : customers) {
-			if (cust.getId() == customer.getId()) {
-				throw new IncorrectDetailsException("ID - cannot change the ID");
-			}
-		}
 		customerDBDAO.updateCustomer(customer);
 	}
 
@@ -89,18 +85,18 @@ public class AdminService extends ClientService {
 		customerDBDAO.deleteCustomer(customer);
 		System.out.println("Delete the Customer Successfully.");
 	}
+
 	public void deleteCustomer(int customerID) {
 		customerDBDAO.deleteCustomerById(customerID);
 		System.out.println("Delete the Customer Successfully.");
 
 	}
- 
 
 	public List<Customer> getAllCustomers() {
 		return customerDBDAO.getAllCustomers();
 	}
 
-	public Customer getOneCustomer(int customerID) {
+	public Optional<Customer> getOneCustomer(int customerID) {
 		return customerDBDAO.getOneCustomer(customerID);
 	}
 

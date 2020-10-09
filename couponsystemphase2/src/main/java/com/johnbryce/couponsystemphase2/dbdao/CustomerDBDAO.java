@@ -1,6 +1,7 @@
 package com.johnbryce.couponsystemphase2.dbdao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -38,11 +39,15 @@ public class CustomerDBDAO {
 		return customerRepository.findAll();
 	}
 
-	public Customer getOneCustomer(int customerID) {
-		return customerRepository.getOne(customerID);
+	public Optional<Customer> getOneCustomer(int customerID) {
+		return customerRepository.findById(customerID);
 	}
 
 	public int getCustomerID(String email) {
 		return customerRepository.findByEmail(email).getId();
+	}
+
+	public Customer getOneCustomerByEmail(String email) {
+		return customerRepository.findByEmail(email);
 	}
 }

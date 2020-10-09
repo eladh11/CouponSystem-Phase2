@@ -3,6 +3,7 @@ package com.johnbryce.couponsystemphase2.service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class CustomerService extends ClientService {
 	public void purchaseCoupon(int customerID, int couponID) throws IncorrectDetailsException {
 
 		// cannot buy the same coupon more than once
-		List<Coupon> coupons = customerDBDAO.getOneCustomer(customerID).getCoupons();
+		List<Coupon> coupons = customerDBDAO.getOneCustomer(customerID).get().getCoupons();
 		if (coupons != null) {
 			for (Coupon coup : coupons) {
 				if (coup.getId() == couponID) {
@@ -46,25 +47,25 @@ public class CustomerService extends ClientService {
 			}
 		}
 		// cannot buy coupon that is amount=0
-		Coupon c = couponDBDAO.getOneCoupon(couponID);
-		if (c.getAmount() == 0) {
+		Optional<Coupon> c = couponDBDAO.getOneCoupon(couponID);
+		if (c.get().getAmount() == 0) {
 			throw new IncorrectDetailsException("cannot buy the coupon: amount = 0");
 		}
 		// cannot buy coupon if date expired
-		if (c.getEndDate().before(new Date())) {
+		if (c.get().getEndDate().before(new Date())) {
 			throw new IncorrectDetailsException("the date of the coupon expired...");
 		}
 		// amount - 1
-		System.out.println("coupon: " + c.getTitle() + " is available.");
-		c.setAmount(c.getAmount() - 1);
-		couponDBDAO.updateCoupon(c);
+		System.out.println("coupon: " + c.get().getTitle() + " is available.");
+		c.get().setAmount(c.get().getAmount() - 1);
+		couponDBDAO.updateCoupon(c.get());
 		couponDBDAO.addCouponPurchase(customerID, couponID);
 		System.out.println("Enjoy your coupon :->");
 
 	}
 
-	public List<Coupon> getCustomerCoupons() {
-		List<Coupon> coupons = customerDBDAO.getOneCustomer(this.customerID).getCoupons();
+	public List<Coupon> getCustomerCoupons(int id) {
+		List<Coupon> coupons = customerDBDAO.getOneCustomer(id).get().getCoupons();
 		if (coupons == null) {
 			System.out.println("Coupons not found...");
 			return null;
@@ -74,7 +75,7 @@ public class CustomerService extends ClientService {
 
 	public List<Coupon> getCustoemrCoupons(Category category) {
 		List<Coupon> idx = new ArrayList<Coupon>();
-		List<Coupon> coupons = customerDBDAO.getOneCustomer(this.customerID).getCoupons();
+		List<Coupon> coupons = customerDBDAO.getOneCustomer(this.customerID).get().getCoupons();
 		for (Coupon coupon : coupons) {
 			if (coupons != null) {
 				if (coupon.getCategory() == category) {
@@ -87,7 +88,7 @@ public class CustomerService extends ClientService {
 
 	public List<Coupon> getCustomerCoupons(double maxPrice) {
 		List<Coupon> idx = new ArrayList<Coupon>();
-		List<Coupon> coupons = customerDBDAO.getOneCustomer(this.customerID).getCoupons();
+		List<Coupon> coupons = customerDBDAO.getOneCustomer(this.customerID).get().getCoupons();
 		for (Coupon coupon : coupons) {
 			if (coupons != null) {
 				if (coupon.getPrice() <= maxPrice) {
@@ -99,12 +100,12 @@ public class CustomerService extends ClientService {
 	}
 
 	public Customer getCustomerDetails() {
-		Customer customer = customerDBDAO.getOneCustomer(this.customerID);
-		if (customer.getCoupons() == null) {
-			System.out.println("Customer:" + customer.getFirst() + " does not have Coupons");
-			return customer;
+		Optional<Customer> customer = customerDBDAO.getOneCustomer(this.customerID);
+		if (customer.get().getCoupons() == null) {
+			System.out.println("Customer:" + customer.get().getFirst() + " does not have Coupons");
+			return customer.get();
 		}
-		return customer;
+		return customer.get();
 	}
 
 	public List<Customer> getAllCustomers() {
@@ -113,5 +114,9 @@ public class CustomerService extends ClientService {
 
 	public int getCustomerID(String email) {
 		return customerDBDAO.getCustomerID(email);
+	}
+
+	public Customer getOneCustomerByEmail(String email) {
+		return customerDBDAO.getOneCustomerByEmail(email);
 	}
 }

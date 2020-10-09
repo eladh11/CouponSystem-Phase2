@@ -1,6 +1,7 @@
 package com.johnbryce.couponsystemphase2.dbdao;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,8 +35,8 @@ public class CouponDBDAO {
 		return couponRepository.findAll();
 	}
 
-	public Coupon getOneCoupon(int couponID) {
-		return couponRepository.getOne(couponID);
+	public Optional<Coupon> getOneCoupon(int couponID) {
+		return couponRepository.findById(couponID);
 	}
 
 	public void addCouponPurchase(int customerID, int couponID) {

@@ -13,7 +13,7 @@ public class Couponsystemphase2Application {
 
 	public static void main(String[] args) throws AlreadyExitException, IncorrectDetailsException {
 		SpringApplication.run(Couponsystemphase2Application.class, args);
-		System.out.println("END...");
+		System.out.println("IoC Container was loaded!");
 	}
 
 }

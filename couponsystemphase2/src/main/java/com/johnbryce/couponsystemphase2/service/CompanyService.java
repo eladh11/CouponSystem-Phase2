@@ -2,6 +2,7 @@ package com.johnbryce.couponsystemphase2.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -26,19 +27,18 @@ public class CompanyService extends ClientService {
 		for (Company company : companies) {
 			if (company.getPassword().equals(password) && company.getEmail().equalsIgnoreCase(email)) {
 				System.out.println("Company login Successfully!");
+				this.companyID = company.getId();
 				return true;
 			}
 		}
 		System.out.println("Wrong Details...");
 		return false;
+
 	}
 
 	public void addCoupon(Coupon coupon) throws IncorrectDetailsException {
 		List<Coupon> coupons = couponDBDAO.getAllCoupons();
 		for (Coupon coup : coupons) {
-			if (coup.getCompanyID() == coupon.getCompanyID()) {
-				throw new IncorrectDetailsException("Cannot be the same ID for the same Company.");
-			}
 			if (coup.getTitle().equals(coupon.getTitle())) {
 				throw new IncorrectDetailsException("Cannot be the same Title for the same Company.");
 			}
@@ -50,30 +50,30 @@ public class CompanyService extends ClientService {
 
 	public void updateCoupon(Coupon coupon) {
 
-		Coupon idx = couponDBDAO.getOneCoupon(coupon.getId());
+		Optional<Coupon> idx = couponDBDAO.getOneCoupon(coupon.getId());
 		if (coupon.getCategory() != null) {
-			idx.setCategory(coupon.getCategory());
+			idx.get().setCategory(coupon.getCategory());
 		}
 		if (coupon.getTitle() != null) {
-			idx.setTitle(coupon.getTitle());
+			idx.get().setTitle(coupon.getTitle());
 		}
 		if (coupon.getDescription() != null) {
-			idx.setDescription(coupon.getDescription());
+			idx.get().setDescription(coupon.getDescription());
 		}
 		if (coupon.getStartDate() != null) {
-			idx.setStartDate(coupon.getStartDate());
+			idx.get().setStartDate(coupon.getStartDate());
 		}
 		if (coupon.getEndDate() != null) {
-			idx.setEndDate(coupon.getEndDate());
+			idx.get().setEndDate(coupon.getEndDate());
 		}
 		if (coupon.getAmount() > 0) {
-			idx.setAmount(coupon.getAmount());
+			idx.get().setAmount(coupon.getAmount());
 		}
 		if (coupon.getPrice() > 0) {
-			idx.setPrice(coupon.getPrice());
+			idx.get().setPrice(coupon.getPrice());
 		}
 		if (coupon.getImage() != null) {
-			idx.setImage(coupon.getImage());
+			idx.get().setImage(coupon.getImage());
 		}
 		couponDBDAO.updateCoupon(coupon);
 		System.out.println("Coupon:" + coupon.getTitle() + " as update Successfully!");
@@ -87,18 +87,16 @@ public class CompanyService extends ClientService {
 		return couponDBDAO.getAllCoupons();
 	}
 
-	public Coupon getOneCoupon(int couponID) {
+	public Optional<Coupon> getOneCoupon(int couponID) {
 		return couponDBDAO.getOneCoupon(couponID);
 	}
 
-	public List<Coupon> getCompanyCoupons() {
+	public List<Coupon> getCompanyCoupons(int id) {
 		List<Coupon> idx = new ArrayList<Coupon>();
 		List<Coupon> coupons = couponDBDAO.getAllCoupons();
 		for (Coupon coupon : coupons) {
-			if (coupons != null) {
-				if (coupon.getId() == this.companyID) {
-					idx.add(coupon);
-				}
+			if (coupon.getCompanyID() == id) {
+				idx.add(coupon);
 			}
 		}
 		return idx;
@@ -136,16 +134,20 @@ public class CompanyService extends ClientService {
 	}
 
 	public Company getCompanyDetails() {
-		Company comp = companyDBDAO.getOneCompany(this.companyID);
-		if (comp.getCoupons() != null) {
-			return comp;
+		Optional<Company> comp = companyDBDAO.getOneCompany(this.companyID);
+		if (comp.get().getCoupons() != null) {
+			return comp.get();
 		}
-		System.out.println("the company:" + comp.getName() + " does not have coupons...");
-		return comp;
+		System.out.println("the company:" + comp.get().getName() + " does not have coupons...");
+		return comp.get();
 	}
 
 	public int getCompanyID(String email) {
 		return companyDBDAO.getCompanyID(email);
 	}
+	public Company getOneCompanyByEmail(String email) {
+		return companyDBDAO.getOneCompanyByEmail(email);
+	}
+	
 
 }
